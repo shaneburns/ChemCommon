@@ -1,0 +1,25 @@
+{
+    "name": "mcshane/chem-common",
+    "type": "library",
+    "license": "MIT",
+    "description": "Main encapsulation of core functionality in MVC, CORE, or API application.",
+    "authors": [
+        {
+            "name": "Shane Burns",
+            "email": "mcshaneburns@gmail.com"
+        }
+    ],
+    "require": {
+        "PHP" : "^7.4",
+        "doctrine/dbal" : "*",
+        "doctrine/cache" : "*",
+        "monolog/monolog" : "*",
+        "thecodingmachine/tdbm" :  "^5.1",
+        "tightenco/overload": "^0.1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "ChemCommon\\": "src"
+        }
+    }
+}
