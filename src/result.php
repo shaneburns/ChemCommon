@@ -1,11 +1,8 @@
 <?php
 namespace ChemCommon;
 
-use Tightenco\Overload\Overloadable;
-
 class result  
 {
-    use Overloadable;
 
     protected $body;
     protected array $headers;
@@ -38,36 +35,27 @@ class result
 
     protected function format(...$args) : void
     {
-        $this->overload($args, [
-            function ($body, int $status, array $headers)
-            {
-                $this->body = !empty($body) && !is_null($body) ? $body : ['request'=> 'failed', 'message'=> 'No reaction found.'] ;
-                $this->status =  0 <= $status && $status < 99 ? 200 : $status;
-                $this->headers = $headers;
-            },
-            function ($body, int $status){
-                $this->format($body, $status, []);
-            },
-            function (\Exception $e){
-                $this->format($e->getMessage(), 500, []);
-            },
-            function (\Exception $e, int $status){
-                $this->format($e->getMessage(), $status, []);
-            },
-            function (\Exception $e, int $status, array $headers){
-                $this->format($e->getMessage(), $status, $headers);
-            },
-            function (result $result){
-                $this->format($result->getBody(), $result->getStatus(), $result->getHeaders());
-                unset($result);
-            },
-            function ($body){
-                $this->format($body, 200, []);
-            },
-            function (){
-                $this->format($this->body ?? null, $this->status ?? 0, $this->headers ?? []);
+        if(count($args) < 3){
+            if(count($args) === 2 && is_int($args[1])){
+                $args[2] = [];
+            }else if(count($args) === 0){
+                $args = [$this->body ?? null, $this->status ?? 200, $this->headers ?? []];
             }
-        ]);
+        }
+            
+        if(typeof($args[0]) === \Exception::class){
+            $args = [$args[0]->getMessage(), $args[1] ?? 500, $args[2] ?? []];
+        }else if(typeof($args[0]) === result::class){
+            $args = [$args[0]->getBody(), $args[0]->getStatus(), $args[0]->getHeaders()];
+        }
+
+        if(count($args) === 1){
+            $args = [$args[0], 200, []];
+        }
+        
+        $this->body = !empty($args[0]) && !is_null($args[0]) ? $args[0] : ['request'=> 'failed', 'message'=> 'No reaction found.'] ;
+        $this->status = 0 <= $args[1] && $args[1] < 99 ? 200 : $args[1]; 
+        $this->headers = $args[2];
     }
 
     protected function HTTPStatus() : object
