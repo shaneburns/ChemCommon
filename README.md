@@ -7,7 +7,7 @@ Extrapolated common code from Chemistry MVC, API, and CORE libraries, converging
 | Class | Desc |
 | ----- | ---- |
 | startup | Set app configuration vars |
-| dbContext | Provide Database context based on config vars(will be extended)|
+| (removed)dbContext | Provide Database context based on config vars(temporarily removed)|
 | result | Guarantee a usable result JSON or HTML result (rework into interface please :) |
 | config | Default extensible project variables for startup configuration |
 
