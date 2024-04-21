@@ -9,8 +9,6 @@
             "email": "mcshaneburns@gmail.com"
         }
     ],
-    "require": {
-    },
     "autoload": {
         "psr-4": {
             "ChemCommon\\": "src"
