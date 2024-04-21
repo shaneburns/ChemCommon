@@ -34,23 +34,25 @@ class result
     }
 
     protected function format(...$args) : void
-    {
-        if(count($args) < 3){
-            if(count($args) === 2 && is_int($args[1])){
-                $args[2] = [];
-            }else if(count($args) === 0){
-                $args = [$this->body ?? null, $this->status ?? 200, $this->headers ?? []];
+    {        
+        if(gettype($args[0]) === "object"){
+            if(get_class($args[0]) === "Exception"){
+                $args = [$args[0]->getMessage(), $args[1] ?? 500, $args[2] ?? []];
+            }else if(get_class($args[0]) === "result"){
+                $args = [$args[0]->getBody(), $args[0]->getStatus(), $args[0]->getHeaders()];
             }
         }
-            
-        if(typeof($args[0]) === \Exception::class){
-            $args = [$args[0]->getMessage(), $args[1] ?? 500, $args[2] ?? []];
-        }else if(typeof($args[0]) === result::class){
-            $args = [$args[0]->getBody(), $args[0]->getStatus(), $args[0]->getHeaders()];
+
+        if(count($args) === 0){
+            $args = [$this->body ?? null, $this->status ?? 404, $this->headers ?? []];
+        }else if(count($args) < 3){
+            $args = [$args[0], 200, []];
         }
 
-        if(count($args) === 1){
-            $args = [$args[0], 200, []];
+		if(empty($args[2])){
+			$args[2] = array();
+		}else if(!empty($args[2]) && !is_array($args[2]) && is_string($args[2]) && preg_match('/(.*,)*/', $args[2])) {
+           $args[2] = explode(',', $args[2]); 
         }
         
         $this->body = !empty($args[0]) && !is_null($args[0]) ? $args[0] : ['request'=> 'failed', 'message'=> 'No reaction found.'] ;
