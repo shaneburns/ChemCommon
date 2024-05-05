@@ -118,8 +118,7 @@ class result
     public function display() : void
     {
         $status = $this->HTTPStatus();
-        echo 'here';
-        // if(!empty($this->headers)) foreach($this->headers as $h ) header($h);
+        if(!empty($this->headers)) foreach($this->headers as $h ) header($h);
 
         if($this->body instanceof \ChemMVC\sequence){
             $this->body->execute(); 
@@ -127,7 +126,9 @@ class result
         }
 
         if($this->status > 399 && (empty($this->body) || is_null($this->body)))  $this->body = ['request'=> 'failed', 'message'=> $status->message];
-        if(gettype($this->body) === "object" || gettype($this->body) === "array") echo \json_encode($this->body);
-        else if(gettype($this->body) === "string") echo $this->body;
+        if(!empty($this->body)){
+            if(gettype($this->body) === "object" || gettype($this->body) === "array") echo \json_encode($this->body);
+            else if(gettype($this->body) === "string") echo $this->body;
+        }
     }
 }
