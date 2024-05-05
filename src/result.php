@@ -126,7 +126,7 @@ class result
         }
 
         if($this->status > 399 && (empty($this->body) || is_null($this->body)))  $this->body = ['request'=> 'failed', 'message'=> $status->message];
-        if(!empty($this->body)){
+        if(!empty($this->body) && $this->body !== '{}'){
             if(gettype($this->body) === "object" || gettype($this->body) === "array") echo \json_encode($this->body);
             else if(gettype($this->body) === "string") echo $this->body;
         }
