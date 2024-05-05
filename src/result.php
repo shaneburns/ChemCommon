@@ -124,7 +124,7 @@ class result
             $this->body->execute(); 
             die();
         }
-        print_r($this->body);
+        
         if($this->status > 399 && (empty($this->body) || is_null($this->body)))  $this->body = ['request'=> 'failed', 'message'=> $status->message];
         if(!empty($this->body) && $this->body !== '{}'){
             if(gettype($this->body) === "object" || gettype($this->body) === "array") echo \json_encode($this->body);
