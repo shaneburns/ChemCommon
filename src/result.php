@@ -118,7 +118,7 @@ class result
     public function display() : void
     {
         $status = $this->HTTPStatus();
-        if(!empty($this->headers)) foreach($this->headers as $h ) header($h);
+        // if(!empty($this->headers)) foreach($this->headers as $h ) header($h);
 
         if($this->body instanceof \ChemMVC\sequence){
             $this->body->execute(); 
