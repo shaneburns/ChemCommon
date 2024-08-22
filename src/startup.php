@@ -11,7 +11,6 @@ class startup
     private result $result;
 
     function __construct(config $config){
-
         // Store config locally
         $this->config = $config;
         
@@ -29,6 +28,13 @@ class startup
             // Require SSL if designated
             if(getenv('requireSSL') && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === "off")) $this->sslRedirect();
 
+            if(getenv('ENVIRONMENT') === 'development'){
+                error_reporting(E_ALL);
+                ini_set('display_errors', 1);
+            }else{
+                error_reporting(0);
+                ini_set('display_errors', 0);
+            }
 
         }catch(\Exception $e){
             $this->result = new result($e, 500);
