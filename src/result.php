@@ -38,7 +38,7 @@ class result
         if(gettype($args[0]) === "object"){
             if(get_class($args[0]) === "Exception"){
                 $args = [$args[0]->getMessage(), $args[1] ?? 500, $args[2] ?? []];
-            }else if(get_class($args[0]) === "result"){
+            }else if(get_class($args[0]) === "ChemCommon\\result"){
                 $args = [$args[0]->getBody(), $args[0]->getStatus(), $args[0]->getHeaders()];
             }
         }
